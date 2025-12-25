@@ -48,7 +48,7 @@ const Hero = () => {
 
                         <div className="flex flex-col xs:flex-row items-center gap-3 sm:gap-4 w-full xs:w-auto">
                             <Link
-                                href="/start"
+                                href="/signup"
                                 className="w-full xs:w-auto px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white bg-primary rounded-xl hover:bg-primary/90 transition-all shadow-xl shadow-primary/25 text-center whitespace-nowrap"
                             >
                                 Get Started Now
