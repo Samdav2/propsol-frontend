@@ -4,21 +4,51 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "react-hot-toast";
 import { OrderSummary } from "@/components/payment/OrderSummary";
-import { PaymentMethodSelector } from "@/components/payment/PaymentMethodSelector";
+import { PaymentMethodSelector, CardDetails } from "@/components/payment/PaymentMethodSelector";
 import { PaymentProcessing } from "@/components/payment/PaymentProcessing";
 import { PaymentSuccess } from "@/components/payment/PaymentSuccess";
+import { paymentService } from "@/services/payment.service";
 
 export default function PaymentPage() {
     const [paymentMethod, setPaymentMethod] = useState<"card" | "crypto">("card");
-    const [status, setStatus] = useState<"idle" | "processing" | "success">("idle");
+    const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
+    const [cardDetails, setCardDetails] = useState<CardDetails>({
+        cardNumber: "",
+        expiryDate: "",
+        cvc: "",
+        cardName: "",
+    });
+    const [error, setError] = useState("");
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (paymentMethod === "crypto") {
+            // Placeholder for crypto logic
+            toast.error("Crypto payment not implemented yet.");
+            return;
+        }
+
         setStatus("processing");
-        // Mock payment processing delay
-        setTimeout(() => {
+        setError("");
+
+        try {
+            await paymentService.createPayment({
+                card_name: cardDetails.cardName,
+                card_number: cardDetails.cardNumber,
+                card_expiry_date: cardDetails.expiryDate, // Note: Backend expects datetime, might need formatting
+                card_type: "Visa", // Hardcoded or detected
+                card_cvv: cardDetails.cvc,
+            });
+            toast.success("Payment successful!");
             setStatus("success");
-        }, 3000);
+        } catch (err: any) {
+            console.error("Payment error:", err);
+            const errorMessage = "Payment failed. Please try again.";
+            setError(errorMessage);
+            toast.error(errorMessage);
+            setStatus("error");
+        }
     };
 
     return (
@@ -51,7 +81,7 @@ export default function PaymentPage() {
 
                 <div className="overflow-hidden rounded-2xl bg-white shadow-xl">
                     <div className="p-8 md:p-12">
-                        {status === "idle" ? (
+                        {status === "idle" || status === "error" ? (
                             <div className="grid gap-12 lg:grid-cols-2">
                                 {/* Left Column - Order Summary */}
                                 <div className="space-y-6">
@@ -74,7 +104,15 @@ export default function PaymentPage() {
                                     <PaymentMethodSelector
                                         selectedMethod={paymentMethod}
                                         onSelect={setPaymentMethod}
+                                        cardDetails={cardDetails}
+                                        onCardDetailsChange={setCardDetails}
                                     />
+
+                                    {status === "error" && (
+                                        <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm">
+                                            {error}
+                                        </div>
+                                    )}
 
                                     <div className="space-y-4">
                                         <p className="text-xs text-gray-500">

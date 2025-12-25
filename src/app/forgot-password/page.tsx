@@ -1,7 +1,43 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
+import { authService } from "@/services/auth.service";
 
 export default function ForgotPasswordPage() {
+    const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+    const [error, setError] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    const handleRecover = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage("");
+        setError("");
+
+        try {
+            if (isAdmin) {
+                await authService.recoverAdminPassword(email);
+            } else {
+                await authService.recoverPassword(email);
+            }
+            const successMessage = "Password recovery email sent. Please check your inbox.";
+            setMessage(successMessage);
+            toast.success(successMessage);
+        } catch (err: any) {
+            console.error("Recovery error:", err);
+            const errorMessage = "Failed to send recovery email. Please try again.";
+            setError(errorMessage);
+            toast.error(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4 relative overflow-hidden">
             {/* Logo */}
@@ -38,7 +74,18 @@ export default function ForgotPasswordPage() {
                 <div className="w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
                     <h1 className="text-3xl font-bold text-slate-900 mb-8">Forgot Password</h1>
 
-                    <form className="space-y-6">
+                    {message && (
+                        <div className="mb-4 p-3 bg-green-50 text-green-600 rounded-lg text-sm">
+                            {message}
+                        </div>
+                    )}
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
+                            {error}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleRecover} className="space-y-6">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
                                 Email
@@ -46,21 +93,39 @@ export default function ForgotPasswordPage() {
                             <input
                                 type="email"
                                 id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Email@gmail.com"
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#1234A6] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 placeholder:text-gray-300"
                             />
                         </div>
 
+                        <div className="flex items-center">
+                            <input
+                                id="admin-checkbox"
+                                type="checkbox"
+                                checked={isAdmin}
+                                onChange={(e) => setIsAdmin(e.target.checked)}
+                                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                            />
+                            <label htmlFor="admin-checkbox" className="ml-2 block text-sm text-gray-900">
+                                I am an Admin
+                            </label>
+                        </div>
+
                         <button
                             type="submit"
-                            className="w-full bg-[#3B60FF] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200"
+                            disabled={loading}
+                            className="w-full bg-[#3B60FF] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
-                            Recover Password
+                            {loading ? "Sending..." : "Recover Password"}
                         </button>
 
                         <div className="text-center text-sm text-slate-500 mt-8">
-                            <span>Didn't get code? Resending Verification code in </span>
-                            <span className="font-bold text-[#3B60FF]">00:32</span>
+                            <Link href="/signin" className="text-[#3B60FF] hover:underline">
+                                Back to Sign In
+                            </Link>
                         </div>
                     </form>
                 </div>

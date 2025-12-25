@@ -91,6 +91,22 @@ const Header = () => {
                         <Link href="/about" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
                             About
                         </Link>
+                        <div className="flex flex-col gap-4 w-full px-8 mt-4">
+                            <Link
+                                href="/signin"
+                                className="w-full py-3 text-center text-lg font-semibold text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/25"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Sign In
+                            </Link>
+                            <Link
+                                href="/signup"
+                                className="w-full py-3 text-center text-lg font-semibold text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Sign Up
+                            </Link>
+                        </div>
                     </div>
                 </div>
             )}

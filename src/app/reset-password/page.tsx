@@ -1,57 +1,63 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { authService } from "@/services/auth.service";
 
-export default function SignUpPage() {
+function ResetPasswordContent() {
     const router = useRouter();
-    const [formData, setFormData] = useState({
-        fullName: "",
-        email: "",
-        password: "",
-        referralCode: "",
-    });
+    const searchParams = useSearchParams();
+    const token = searchParams.get("token");
+
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
     const [error, setError] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        setFormData((prev) => ({ ...prev, [id]: value }));
-    };
+    useEffect(() => {
+        if (!token) {
+            setError("Invalid or missing reset token.");
+        }
+    }, [token]);
 
-    const handleRegister = async (e: React.FormEvent) => {
+    const handleReset = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setMessage("");
         setError("");
 
-        try {
-            const response = await authService.register({
-                email: formData.email,
-                name: formData.fullName,
-                password: formData.password,
-                referred_by: formData.referralCode || undefined,
-            });
+        if (!token) {
+            setError("Missing reset token.");
+            setLoading(false);
+            return;
+        }
 
-            // If registration returns a token, redirect to dashboard
-            if (response && response.access_token) {
-                toast.success("Signup successful! Redirecting...");
-                setTimeout(() => {
-                    router.push("/dashboard");
-                }, 1500);
+        if (newPassword !== confirmPassword) {
+            setError("Passwords do not match.");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            if (isAdmin) {
+                await authService.resetAdminPassword(token, newPassword);
             } else {
-                // Otherwise redirect to login
-                toast.success("Signup successful! Please sign in.");
-                setTimeout(() => {
-                    router.push("/signin");
-                }, 1500);
+                await authService.resetPassword(token, newPassword);
             }
+            const successMessage = "Password reset successfully. You can now login.";
+            setMessage(successMessage);
+            toast.success(successMessage);
+            setTimeout(() => {
+                router.push("/signin");
+            }, 2000);
         } catch (err: any) {
-            console.error("Registration error:", err);
-            const errorMessage = "Registration failed. Please try again.";
+            console.error("Reset error:", err);
+            const errorMessage = "Failed to reset password. The token may be invalid or expired.";
             setError(errorMessage);
             toast.error(errorMessage);
         } finally {
@@ -93,86 +99,74 @@ export default function SignUpPage() {
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl overflow-hidden flex flex-col lg:flex-row relative z-10 min-h-[600px]">
                 {/* Left Section: Form */}
                 <div className="w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
-                    <h1 className="text-3xl font-bold text-slate-900 mb-8">Sign Up</h1>
+                    <h1 className="text-3xl font-bold text-slate-900 mb-8">Reset Password</h1>
 
+                    {message && (
+                        <div className="mb-4 p-3 bg-green-50 text-green-600 rounded-lg text-sm">
+                            {message}
+                        </div>
+                    )}
                     {error && (
                         <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
                             {error}
                         </div>
                     )}
 
-                    <form onSubmit={handleRegister} className="space-y-6">
+                    <form onSubmit={handleReset} className="space-y-6">
                         <div>
-                            <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 mb-2">
-                                Full Name
-                            </label>
-                            <input
-                                type="text"
-                                id="fullName"
-                                value={formData.fullName}
-                                onChange={handleChange}
-                                placeholder="Enter Name"
-                                required
-                                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#1234A6] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 placeholder:text-gray-300"
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
-                                Email Address
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="Email@gmail.com"
-                                required
-                                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#1234A6] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 placeholder:text-gray-300"
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
-                                Password
+                            <label htmlFor="newPassword" className="block text-sm font-medium text-slate-700 mb-2">
+                                New Password
                             </label>
                             <input
                                 type="password"
-                                id="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                placeholder="************"
+                                id="newPassword"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                placeholder="Enter new password"
                                 required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#1234A6] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 placeholder:text-gray-300"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="referralCode" className="block text-sm font-medium text-slate-700 mb-2">
-                                Referral Code (Optional)
+                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-2">
+                                Confirm Password
                             </label>
                             <input
-                                type="text"
-                                id="referralCode"
-                                value={formData.referralCode}
-                                onChange={handleChange}
-                                placeholder="If you have a referral code, enter it here."
+                                type="password"
+                                id="confirmPassword"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Confirm new password"
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#1234A6] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 placeholder:text-gray-300"
                             />
+                        </div>
+
+                        <div className="flex items-center">
+                            <input
+                                id="admin-checkbox"
+                                type="checkbox"
+                                checked={isAdmin}
+                                onChange={(e) => setIsAdmin(e.target.checked)}
+                                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                            />
+                            <label htmlFor="admin-checkbox" className="ml-2 block text-sm text-gray-900">
+                                I am an Admin
+                            </label>
                         </div>
 
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={loading || !token}
                             className="w-full bg-[#3B60FF] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
-                            {loading ? "Signing Up..." : "Sign Up"}
+                            {loading ? "Resetting..." : "Reset Password"}
                         </button>
 
-                        <div className="flex items-center justify-center text-sm text-slate-500 gap-1 mt-8">
-                            <span>Already have an account?</span>
-                            <Link href="/signin" className="text-[#3B60FF] hover:text-[#1234A6] font-medium transition-colors">
-                                Sign In
+                        <div className="text-center text-sm text-slate-500 mt-8">
+                            <Link href="/signin" className="text-[#3B60FF] hover:underline">
+                                Back to Sign In
                             </Link>
                         </div>
                     </form>
@@ -192,13 +186,21 @@ export default function SignUpPage() {
 
                     <div className="relative z-20 mb-10">
                         <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold text-white mb-6 leading-tight">
-                            Hey<br />
-                            Welcome to<br />
-                            PropSol
+                            Create a New<br />
+                            Strong Password<br />
+                            for Your Account
                         </h2>
                     </div>
                 </div>
             </div>
         </main>
+    );
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ResetPasswordContent />
+        </Suspense>
     );
 }

@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: "Get your prop firm account passed within 30 days. Guaranteed results or 100% refund.",
 };
 
+import { Toaster } from "react-hot-toast";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -18,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
+        <Toaster position="top-right" />
         {children}
       </body>
     </html>

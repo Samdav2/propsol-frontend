@@ -1,8 +1,63 @@
-"use client";
-
-import { Copy, Share2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Copy, Share2, Check } from "lucide-react";
+import { userService, ReferralStatsResponse } from "@/services/user.service";
 
 export function ReferralsView() {
+    const [stats, setStats] = useState<ReferralStatsResponse | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const data = await userService.getReferralStats();
+                setStats(data);
+            } catch (error) {
+                console.error("Failed to fetch referral stats:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStats();
+    }, []);
+
+    const referralLink = stats?.referral_code
+        ? `${typeof window !== 'undefined' ? window.location.origin : ''}/register?ref=${stats.referral_code}`
+        : "Loading...";
+
+    const handleCopy = async () => {
+        if (!stats?.referral_code) return;
+        try {
+            await navigator.clipboard.writeText(referralLink);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error("Failed to copy:", err);
+        }
+    };
+
+    const handleShare = async () => {
+        if (!stats?.referral_code) return;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Join PropSol',
+                    text: 'Join me on PropSol and get funded!',
+                    url: referralLink,
+                });
+            } catch (err) {
+                console.log('Error sharing:', err);
+            }
+        } else {
+            handleCopy();
+        }
+    };
+
+    if (loading) {
+        return <div className="py-20 text-center text-gray-500">Loading referral data...</div>;
+    }
+
     return (
         <div className="flex justify-center py-8">
             <div className="w-full max-w-md rounded-2xl bg-gray-100 p-8 text-center">
@@ -18,15 +73,15 @@ export function ReferralsView() {
                         Referral Link
                     </label>
                     <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
-                        <span className="truncate text-sm text-gray-600">
-                            3ynoasnd09qksdwfdfge8sdsds
+                        <span className="truncate text-sm text-gray-600 select-all">
+                            {referralLink}
                         </span>
                         <div className="flex gap-2 text-gray-500">
-                            <button className="hover:text-gray-900">
+                            <button onClick={handleShare} className="hover:text-gray-900" title="Share">
                                 <Share2 className="h-4 w-4" />
                             </button>
-                            <button className="hover:text-gray-900">
-                                <Copy className="h-4 w-4" />
+                            <button onClick={handleCopy} className="hover:text-gray-900" title="Copy">
+                                {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
                             </button>
                         </div>
                     </div>
@@ -37,19 +92,19 @@ export function ReferralsView() {
                     <div className="space-y-3">
                         <div className="flex justify-between text-sm">
                             <span className="text-gray-500">Total referrals</span>
-                            <span className="font-medium text-gray-900">0</span>
+                            <span className="font-medium text-gray-900">{stats?.total_referrals || 0}</span>
                         </div>
                         <div className="flex justify-between text-sm">
                             <span className="text-gray-500">Successful passes</span>
-                            <span className="font-medium text-gray-900">0</span>
+                            <span className="font-medium text-gray-900">{stats?.successful_passes || 0}</span>
                         </div>
                         <div className="flex justify-between text-sm">
                             <span className="text-gray-500">Pending referrals</span>
-                            <span className="font-medium text-gray-900">0</span>
+                            <span className="font-medium text-gray-900">{stats?.pending_referrals || 0}</span>
                         </div>
                         <div className="flex justify-between text-sm">
                             <span className="text-gray-500">Total earned</span>
-                            <span className="font-medium text-gray-900">0</span>
+                            <span className="font-medium text-gray-900">${stats?.total_earned?.toFixed(2) || "0.00"}</span>
                         </div>
                     </div>
                 </div>

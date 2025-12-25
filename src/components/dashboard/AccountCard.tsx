@@ -6,12 +6,15 @@ import { cn } from "@/lib/utils";
 import { AccountInfoModal } from "@/components/dashboard/AccountInfoModal";
 import Link from "next/link";
 
+import { PropFirmRegistration } from "@/services/prop-firm.service";
+
 interface AccountCardProps {
     id: string;
     password?: string; // Optional for security/mock
     name: string;
-    status: "pending" | "in-progress" | "passed" | "failed";
+    status: "pending" | "in_progress" | "passed" | "failed";
     currentStep: 1 | 2 | 3; // 1: Register, 2: Passing, 3: Passed
+    account: PropFirmRegistration;
 }
 
 export function AccountCard({
@@ -20,6 +23,7 @@ export function AccountCard({
     name,
     status,
     currentStep,
+    account,
 }: AccountCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isFailed = status === "failed";
@@ -53,21 +57,12 @@ export function AccountCard({
                             </p>
                         </div>
                     </div>
-                    {status === "passed" ? (
-                        <Link
-                            href="/dashboard/account-passed"
-                            className="text-sm font-medium text-blue-600 hover:underline"
-                        >
-                            Check Prop firm account full information
-                        </Link>
-                    ) : (
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="text-sm font-medium text-blue-600 hover:underline"
-                        >
-                            Check Prop firm account full information
-                        </button>
-                    )}
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="text-sm font-medium text-blue-600 hover:underline"
+                    >
+                        Check Prop firm account full information
+                    </button>
                 </div>
 
                 {/* Progress Stepper */}
@@ -78,20 +73,10 @@ export function AccountCard({
                             <div
                                 className={cn(
                                     "flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors bg-white",
-                                    currentStep >= 1
-                                        ? isFailed && currentStep === 1
-                                            ? "border-red-500 bg-red-500 text-white"
-                                            : "border-blue-600 bg-blue-600 text-white"
-                                        : "border-gray-300 text-gray-300"
+                                    "border-blue-600 bg-blue-600 text-white" // Always blue/completed for Step 1
                                 )}
                             >
-                                {currentStep > 1 || (currentStep === 1 && !isFailed) ? (
-                                    <Check className="h-4 w-4" />
-                                ) : isFailed && currentStep === 1 ? (
-                                    <X className="h-4 w-4" />
-                                ) : (
-                                    <div className="h-2 w-2 rounded-full bg-current" />
-                                )}
+                                <Check className="h-4 w-4" />
                             </div>
                             <span className="absolute top-10 hidden w-32 text-center text-sm font-medium text-gray-500 sm:block">
                                 Register & Submit
@@ -103,9 +88,9 @@ export function AccountCard({
                             <div
                                 className={cn(
                                     "absolute inset-0 transition-all duration-500",
-                                    isFailed ? "bg-red-500" : "bg-blue-600"
+                                    "bg-blue-600" // Always blue connecting 1 to 2
                                 )}
-                                style={{ width: currentStep >= 2 ? "100%" : currentStep === 1 ? "50%" : "0%" }}
+                                style={{ width: "100%" }}
                             />
                         </div>
 
@@ -115,16 +100,18 @@ export function AccountCard({
                                 className={cn(
                                     "flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors bg-white",
                                     currentStep >= 2
-                                        ? isFailed && currentStep === 2
+                                        ? isFailed
                                             ? "border-red-500 bg-red-500 text-white"
                                             : "border-blue-600 bg-blue-600 text-white"
                                         : "border-gray-300 text-gray-300"
                                 )}
                             >
-                                {currentStep > 2 || (currentStep === 2 && !isFailed) ? (
+                                {currentStep > 2 && !isFailed ? (
                                     <Check className="h-4 w-4" />
-                                ) : isFailed && currentStep === 2 ? (
+                                ) : isFailed ? (
                                     <X className="h-4 w-4" />
+                                ) : currentStep === 2 ? (
+                                    <div className="h-2 w-2 rounded-full bg-current" />
                                 ) : (
                                     <div className="h-2 w-2 rounded-full bg-current" />
                                 )}
@@ -141,7 +128,7 @@ export function AccountCard({
                                     "absolute inset-0 transition-all duration-500",
                                     isFailed ? "bg-red-500" : "bg-blue-600"
                                 )}
-                                style={{ width: currentStep >= 3 ? "100%" : currentStep === 2 ? "50%" : "0%" }}
+                                style={{ width: currentStep >= 3 || isFailed ? "100%" : currentStep === 2 ? "50%" : "0%" }}
                             />
                         </div>
 
@@ -150,8 +137,8 @@ export function AccountCard({
                             <div
                                 className={cn(
                                     "flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors bg-white",
-                                    currentStep >= 3
-                                        ? isFailed && currentStep === 3
+                                    currentStep >= 3 || isFailed
+                                        ? isFailed
                                             ? "border-red-500 bg-red-500 text-white"
                                             : "border-blue-600 bg-blue-600 text-white"
                                         : "border-gray-300 text-gray-300"
@@ -159,7 +146,7 @@ export function AccountCard({
                             >
                                 {currentStep === 3 && !isFailed ? (
                                     <Check className="h-4 w-4" />
-                                ) : isFailed && currentStep === 3 ? (
+                                ) : isFailed ? (
                                     <X className="h-4 w-4" />
                                 ) : (
                                     <div className="h-2 w-2 rounded-full bg-current" />
@@ -178,6 +165,7 @@ export function AccountCard({
             <AccountInfoModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
+                account={account}
             />
         </>
     );

@@ -3,7 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, ChevronDown } from "lucide-react";
+import { toast } from "react-hot-toast";
+import { propFirmService } from "@/services/prop-firm.service";
 
 export default function RegistrationWizardPage() {
     const [currentStep, setCurrentStep] = useState(1);
@@ -26,20 +29,98 @@ export default function RegistrationWizardPage() {
         telegramUsername: "",
     });
 
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const router = useRouter();
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const validateStep = (step: number) => {
+        switch (step) {
+            case 1:
+                if (!formData.loginId || !formData.password) {
+                    toast.error("Please fill in all fields");
+                    return false;
+                }
+                return true;
+            case 2:
+                if (!formData.propFirmName || !formData.propFirmWebsite || !formData.serverName) {
+                    toast.error("Please fill in all fields");
+                    return false;
+                }
+                return true;
+            case 3:
+                if (!formData.serverType || !formData.challengeSteps || !formData.accountCost) {
+                    toast.error("Please fill in all fields");
+                    return false;
+                }
+                return true;
+            case 4:
+                if (!formData.accountSize || !formData.accountPhases) {
+                    toast.error("Please fill in all fields");
+                    return false;
+                }
+                return true;
+            case 5:
+                if (!formData.propFirmRules || !formData.whatsappNumber || !formData.telegramUsername) {
+                    toast.error("Please fill in all fields");
+                    return false;
+                }
+                return true;
+            default:
+                return true;
+        }
+    };
+
     const nextStep = () => {
+        if (!validateStep(currentStep)) return;
+
         if (currentStep < totalSteps) {
             setCurrentStep((prev) => prev + 1);
+        } else {
+            handleSubmit();
         }
     };
 
     const prevStep = () => {
         if (currentStep > 1) {
             setCurrentStep((prev) => prev - 1);
+        }
+    };
+
+    const handleSubmit = async () => {
+        setLoading(true);
+        setError("");
+        try {
+            await propFirmService.createRegistration({
+                login_id: formData.loginId,
+                password: formData.password,
+                propfirm_name: formData.propFirmName,
+                propfirm_website_link: formData.propFirmWebsite,
+                server_name: formData.serverName,
+                server_type: formData.serverType,
+                challenges_step: parseInt(formData.challengeSteps) || 1,
+                propfirm_account_cost: parseFloat(formData.accountCost) || 0,
+                account_size: parseFloat(formData.accountSize) || 0,
+                account_phases: formData.accountPhases === "1 Step Challenge" ? 1 : 2,
+                trading_platform: "Metatrader 5", // Fixed as per UI
+                propfirm_rules: formData.propFirmRules,
+                whatsapp_no: formData.whatsappNumber,
+                telegram_username: formData.telegramUsername,
+            });
+            toast.success("Registration successful! Redirecting...");
+            setTimeout(() => {
+                router.push("/dashboard");
+            }, 1500);
+        } catch (err: any) {
+            console.error("Registration error:", err);
+            const errorMessage = "Failed to create registration. Please check your inputs and try again.";
+            setError(errorMessage);
+            toast.error(errorMessage);
+            setLoading(false);
         }
     };
 
@@ -55,6 +136,7 @@ export default function RegistrationWizardPage() {
                                 name="loginId"
                                 value={formData.loginId}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -65,6 +147,7 @@ export default function RegistrationWizardPage() {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -80,6 +163,7 @@ export default function RegistrationWizardPage() {
                                 name="propFirmName"
                                 value={formData.propFirmName}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -90,6 +174,7 @@ export default function RegistrationWizardPage() {
                                 name="propFirmWebsite"
                                 value={formData.propFirmWebsite}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -100,6 +185,7 @@ export default function RegistrationWizardPage() {
                                 name="serverName"
                                 value={formData.serverName}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -115,26 +201,29 @@ export default function RegistrationWizardPage() {
                                 name="serverType"
                                 value={formData.serverType}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">Challenge Steps</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="challengeSteps"
                                 value={formData.challengeSteps}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">Cost of Prop Account</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="accountCost"
                                 value={formData.accountCost}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -146,10 +235,11 @@ export default function RegistrationWizardPage() {
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">Account size indication</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="accountSize"
                                 value={formData.accountSize}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -160,6 +250,7 @@ export default function RegistrationWizardPage() {
                                     name="accountPhases"
                                     value={formData.accountPhases}
                                     onChange={handleInputChange}
+                                    required
                                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 appearance-none bg-white"
                                 >
                                     <option value="">Select Phase</option>
@@ -186,11 +277,12 @@ export default function RegistrationWizardPage() {
                     <div className="space-y-6 animate-fadeIn">
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">Prop Firm Rules (to state all rules clearly)</label>
-                            <input
-                                type="text"
+                            <textarea
                                 name="propFirmRules"
                                 value={formData.propFirmRules}
-                                onChange={handleInputChange}
+                                onChange={handleInputChange as any}
+                                rows={4}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -201,6 +293,7 @@ export default function RegistrationWizardPage() {
                                 name="whatsappNumber"
                                 value={formData.whatsappNumber}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -211,6 +304,7 @@ export default function RegistrationWizardPage() {
                                 name="telegramUsername"
                                 value={formData.telegramUsername}
                                 onChange={handleInputChange}
+                                required
                                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#3B60FF] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600"
                             />
                         </div>
@@ -255,6 +349,7 @@ export default function RegistrationWizardPage() {
                     alt="Decorative Star"
                     fill
                     className="object-contain"
+                    priority
                 />
             </div>
 
@@ -276,14 +371,21 @@ export default function RegistrationWizardPage() {
                         Prop Firm Account Details Form
                     </h2>
 
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
+                            {error}
+                        </div>
+                    )}
+
                     {renderStepContent()}
 
                     <div className="mt-10">
                         <button
                             onClick={nextStep}
-                            className="w-full bg-[#3B60FF] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200"
+                            disabled={loading}
+                            className="w-full bg-[#3B60FF] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-200 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
-                            {currentStep === totalSteps ? "Finalize & Submit" : "Next"}
+                            {loading ? "Submitting..." : (currentStep === totalSteps ? "Finalize & Submit" : "Next")}
                         </button>
                     </div>
                 </div>

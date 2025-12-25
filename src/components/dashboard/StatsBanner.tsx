@@ -1,4 +1,15 @@
-export function StatsBanner() {
+import { PropFirmRegistration } from "@/services/prop-firm.service";
+
+interface StatsBannerProps {
+    accounts?: PropFirmRegistration[];
+}
+
+export function StatsBanner({ accounts = [] }: StatsBannerProps) {
+    const pendingCount = accounts.filter(a => a.account_status === 'pending').length;
+    const inProgressCount = accounts.filter(a => a.account_status === 'in_progress').length;
+    const passedCount = accounts.filter(a => a.account_status === 'passed').length;
+    const failedCount = accounts.filter(a => a.account_status === 'failed').length;
+
     return (
         <div className="w-full bg-blue-600 py-8 text-white">
             <div className="container mx-auto px-4">
@@ -8,7 +19,7 @@ export function StatsBanner() {
                             Pending Accounts
                         </span>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-bold">11</span>
+                            <span className="text-4xl font-bold">{pendingCount.toString().padStart(2, '0')}</span>
                             <span className="text-xs text-blue-200">Current</span>
                         </div>
                     </div>
@@ -17,7 +28,7 @@ export function StatsBanner() {
                             In Progress
                         </span>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-bold">00</span>
+                            <span className="text-4xl font-bold">{inProgressCount.toString().padStart(2, '0')}</span>
                             <span className="text-xs text-blue-200">Current</span>
                         </div>
                     </div>
@@ -26,7 +37,7 @@ export function StatsBanner() {
                             Passed Accounts
                         </span>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-bold">00</span>
+                            <span className="text-4xl font-bold">{passedCount.toString().padStart(2, '0')}</span>
                             <span className="text-xs text-blue-200">Current</span>
                         </div>
                     </div>
@@ -35,7 +46,7 @@ export function StatsBanner() {
                             Failed Accounts
                         </span>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-4xl font-bold">00</span>
+                            <span className="text-4xl font-bold">{failedCount.toString().padStart(2, '0')}</span>
                             <span className="text-xs text-blue-200">Current</span>
                         </div>
                     </div>

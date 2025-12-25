@@ -1,15 +1,31 @@
 import { CreditCard, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+export interface CardDetails {
+    cardNumber: string;
+    expiryDate: string;
+    cvc: string;
+    cardName: string;
+}
+
 interface PaymentMethodSelectorProps {
     selectedMethod: "card" | "crypto";
     onSelect: (method: "card" | "crypto") => void;
+    cardDetails: CardDetails;
+    onCardDetailsChange: (details: CardDetails) => void;
 }
 
 export function PaymentMethodSelector({
     selectedMethod,
     onSelect,
+    cardDetails,
+    onCardDetailsChange,
 }: PaymentMethodSelectorProps) {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        onCardDetailsChange({ ...cardDetails, [name]: value });
+    };
+
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -51,11 +67,21 @@ export function PaymentMethodSelector({
                 </button>
             </div>
 
-            {/* Input fields placeholder - only showing for Card for now as per mockup implication,
-          but mockup shows empty fields below both. I'll add generic inputs. */}
             <div className="space-y-3 pt-2">
                 <input
                     type="text"
+                    name="cardName"
+                    value={cardDetails.cardName}
+                    onChange={handleChange}
+                    placeholder="Card Holder Name"
+                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    disabled={selectedMethod === "crypto"}
+                />
+                <input
+                    type="text"
+                    name="cardNumber"
+                    value={cardDetails.cardNumber}
+                    onChange={handleChange}
                     placeholder="Card Number"
                     className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     disabled={selectedMethod === "crypto"}
@@ -63,12 +89,18 @@ export function PaymentMethodSelector({
                 <div className="flex gap-3">
                     <input
                         type="text"
+                        name="expiryDate"
+                        value={cardDetails.expiryDate}
+                        onChange={handleChange}
                         placeholder="MM / YY"
                         className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         disabled={selectedMethod === "crypto"}
                     />
                     <input
                         type="text"
+                        name="cvc"
+                        value={cardDetails.cvc}
+                        onChange={handleChange}
                         placeholder="CVC"
                         className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         disabled={selectedMethod === "crypto"}
