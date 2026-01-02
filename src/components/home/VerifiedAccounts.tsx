@@ -1,0 +1,105 @@
+"use client";
+
+import { Sparkles } from "lucide-react";
+import Image from "next/image";
+
+const VerifiedAccounts = () => {
+    return (
+        <section className="relative pt-40 pb-24 bg-[#0a0e27] overflow-hidden mt-[-1px]">
+            {/* Curved Top Divider */}
+            {/* Curved Top Divider */}
+            <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-10">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-[calc(100%+1.3px)] h-[60px] sm:h-[100px]">
+                    <path d="M0,0 L1200,0 L1200,20 C1200,20 900,100 600,100 C300,100 0,20 0,20 Z" className="fill-slate-50"></path>
+                </svg>
+            </div>
+
+            {/* Background Decorative Elements */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {/* Professional Trading Background Pattern */}
+                <div className="absolute inset-0 opacity-20"
+                    style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='0 0 1000 500' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='40' height='40' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)'/%3E%3C!-- Candlesticks --%3E%3Cg transform='translate(0, 200)'%3E%3C!-- Green Candles --%3E%3Crect x='50' y='-50' width='8' height='80' fill='%2310b981' opacity='0.6'/%3E%3Cline x1='54' y1='-70' x2='54' y2='50' stroke='%2310b981' stroke-width='1' opacity='0.6'/%3E%3Crect x='100' y='-20' width='8' height='40' fill='%2310b981' opacity='0.6'/%3E%3Cline x1='104' y1='-40' x2='104' y2='30' stroke='%2310b981' stroke-width='1' opacity='0.6'/%3E%3Crect x='150' y='-80' width='8' height='120' fill='%2310b981' opacity='0.6'/%3E%3Cline x1='154' y1='-100' x2='154' y2='60' stroke='%2310b981' stroke-width='1' opacity='0.6'/%3E%3C!-- Red Candles --%3E%3Crect x='200' y='0' width='8' height='60' fill='%23ef4444' opacity='0.6'/%3E%3Cline x1='204' y1='-20' x2='204' y2='80' stroke='%23ef4444' stroke-width='1' opacity='0.6'/%3E%3Crect x='250' y='40' width='8' height='40' fill='%23ef4444' opacity='0.6'/%3E%3Cline x1='254' y1='20' x2='254' y2='100' stroke='%23ef4444' stroke-width='1' opacity='0.6'/%3E%3C!-- More Green --%3E%3Crect x='300' y='-40' width='8' height='90' fill='%2310b981' opacity='0.6'/%3E%3Cline x1='304' y1='-60' x2='304' y2='70' stroke='%2310b981' stroke-width='1' opacity='0.6'/%3E%3Crect x='350' y='-100' width='8' height='150' fill='%2310b981' opacity='0.6'/%3E%3Cline x1='354' y1='-120' x2='354' y2='70' stroke='%2310b981' stroke-width='1' opacity='0.6'/%3E%3C!-- Trend Line --%3E%3Cpath d='M54,230 L104,220 L154,160 L204,260 L254,300 L304,210 L354,150 L450,50 L550,150 L650,100 L750,200 L850,50 L950,150' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-opacity='0.4'/%3E%3C/g%3E%3C/svg%3E")`,
+                        backgroundRepeat: 'repeat-x',
+                        backgroundPosition: 'bottom center',
+                        backgroundSize: 'cover'
+                    }}
+                />
+
+                {/* Purple/blue glow effects */}
+                <div className="absolute top-0 right-1/4 w-[600px] h-[400px] bg-purple-600/10 blur-[150px] rounded-full" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[300px] bg-blue-600/10 blur-[100px] rounded-full" />
+            </div>
+
+            <div className="container mx-auto px-4 sm:px-6 relative z-10">
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+                        Verified Funded Accounts <span className="text-slate-400 font-normal text-2xl sm:text-3xl block sm:inline mt-2 sm:mt-0">(Proof of Execution, Not Promises)</span>
+                    </h2>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+                    {/* FTMO Card */}
+                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                        <div className="relative flex flex-col items-center text-center">
+                            <div className="relative w-32 h-12 mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <Image
+                                    src="/assets/ftmo_logo.png"
+                                    alt="FTMO"
+                                    fill
+                                    className="object-contain brightness-0 invert"
+                                />
+                            </div>
+                            <div className="h-1 w-12 bg-blue-500 rounded-full mb-4" />
+                            <p className="text-slate-300 font-medium">Account Passing Process</p>
+                        </div>
+                    </div>
+
+                    {/* FundedNext Card */}
+                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                        <div className="relative flex flex-col items-center text-center">
+                            <div className="relative w-40 h-12 mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <Image
+                                    src="/assets/funded_next_logo.png"
+                                    alt="FundedNext"
+                                    fill
+                                    className="object-contain brightness-0 invert"
+                                />
+                            </div>
+                            <div className="h-1 w-12 bg-orange-500 rounded-full mb-4" />
+                            <p className="text-slate-300 font-medium">Account Passing Process</p>
+                        </div>
+                    </div>
+
+                    {/* FundingPips Card */}
+                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                        <div className="relative flex flex-col items-center text-center">
+                            <div className="relative w-40 h-12 mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <Image
+                                    src="/assets/funding_pips_logo.png"
+                                    alt="FundingPips"
+                                    fill
+                                    className="object-contain brightness-0 invert"
+                                />
+                            </div>
+                            <div className="h-1 w-12 bg-emerald-500 rounded-full mb-4" />
+                            <p className="text-slate-300 font-medium">Account Passing Process</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 text-center text-slate-400 text-sm max-w-3xl mx-auto">
+                    <Sparkles className="w-4 h-4 text-slate-500" />
+                    <p>
+                        Certificates shown represent previously completed challenges. Only demonstrates proof of capability, not guarantee of your firm's use.
+                    </p>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default VerifiedAccounts;
