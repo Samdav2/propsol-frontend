@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, Check } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 
 const benefits = [
@@ -10,79 +10,54 @@ const benefits = [
     },
     {
         title: "Fully Rule Compliant Trading",
-        description: "Daily loss, max drawdown, and consistency rules fully respected.",
+        description: "Daily loss, max. drawdown, and consistency rules fully respected.",
     },
     {
         title: "Timely Completion",
-        description: "Phases are completed within 20-40 Trading Days, minimizing risk.",
+        description: "Passes are completed within 30—60 trading days, minimizing risk.",
     },
     {
         title: "Zero-Risk Guarantee",
-        description: "If we fail to pass your challenge:\n• You get a full refund of your service fee\n• Your challenge fee is refunded\n• You receive $100 compensation for time wasted",
+        description: "If we fail to pass your challenge:\nYou get a full refund of the service fee\nYour challenge fee is refunded\nYou receive $100 compensation for time wasted",
     },
-];
-
-const afterPassing = [
-    "After your prop firm challenge is successfully passed,",
-    "You gain access to the PropSol Trading System – a structured execution and risk management network, designed to support disciplined trading funded accounts.",
 ];
 
 const WhatPropSolDoes = () => {
     return (
-        <section className="py-20 bg-slate-50 overflow-hidden">
+        <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden bg-gradient-to-b from-[#d8e5f7] via-[#e0eaf8] to-[#e8eef8]">
             <div className="container mx-auto px-4 sm:px-6">
-                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
                     {/* Left Column - What PropSol Does */}
-                    <div className="flex-1">
-                        <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-10">
+                    <div className="flex-1 w-full lg:max-w-[45%]">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-6 sm:mb-8 text-center lg:text-left">
                             What PropSol Actually Does
                         </h2>
-                        <div className="space-y-8">
+                        <div className="space-y-4 sm:space-y-6">
                             {benefits.map((benefit, index) => (
-                                <div key={index} className="flex items-start gap-4">
-                                    <div className="flex-shrink-0 mt-1">
-                                        <CheckCircle2 className="w-8 h-8 text-blue-600 fill-blue-100" />
+                                <div key={index} className="flex items-start gap-2 sm:gap-3">
+                                    <div className="flex-shrink-0 mt-0.5">
+                                        <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 fill-blue-500" strokeWidth={0} />
                                     </div>
                                     <div>
-                                        <h3 className="text-xl font-bold text-slate-900 mb-2">{benefit.title}</h3>
-                                        <div className="text-slate-600 text-base leading-relaxed whitespace-pre-line">
+                                        <h3 className="text-sm sm:text-base md:text-lg font-bold text-slate-900 mb-0.5 sm:mb-1">{benefit.title}</h3>
+                                        <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed whitespace-pre-line">
                                             {benefit.description}
-                                        </div>
+                                        </p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* Right Column - Image + What Happens After */}
-                    <div className="flex-1 w-full">
-                        {/* Monitor/Phone Image */}
-                        <div className="relative w-full aspect-[16/10] mb-10">
+                    {/* Right Column - Image */}
+                    <div className="flex-1 w-full lg:max-w-[55%] order-first lg:order-last">
+                        <div className="relative w-full aspect-[16/10] sm:aspect-[4/3] lg:aspect-[16/12]">
                             <Image
-                                src="/assets/monitor_phone_dashboard.png"
+                                src="/assets/images/what-propsol-does.png"
                                 alt="PropSol Trading Dashboard on Monitor and Phone"
                                 fill
-                                className="object-contain"
+                                className="object-contain object-center lg:object-right-bottom"
                             />
-                        </div>
-
-                        {/* What Happens After Section */}
-                        <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
-                            <h3 className="text-2xl font-bold text-slate-900 mb-6">
-                                What Happens After Your Account Is Passed
-                            </h3>
-                            <div className="space-y-4">
-                                {afterPassing.map((item, index) => (
-                                    <div key={index} className="flex items-start gap-3">
-                                        <div className="flex-shrink-0 mt-1">
-                                            <Check className="w-5 h-5 text-blue-600" />
-                                        </div>
-                                        <p className="text-slate-700 text-base leading-relaxed font-medium">
-                                            {item}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
                         </div>
                     </div>
                 </div>

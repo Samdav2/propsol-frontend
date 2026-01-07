@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const VerifiedAccounts = () => {
     return (
-        <section className="relative pt-40 pb-24 bg-[#0a0e27] overflow-hidden mt-[-1px]">
+        <section className="relative pt-24 sm:pt-40 pb-16 sm:pb-24 bg-[#0a0e27] overflow-hidden mt-[-1px]">
             {/* Curved Top Divider */}
             {/* Curved Top Divider */}
             <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-10">
@@ -32,13 +32,13 @@ const VerifiedAccounts = () => {
             </div>
 
             <div className="container mx-auto px-4 sm:px-6 relative z-10">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-                        Verified Funded Accounts <span className="text-slate-400 font-normal text-2xl sm:text-3xl block sm:inline mt-2 sm:mt-0">(Proof of Execution, Not Promises)</span>
+                <div className="text-center mb-10 sm:mb-16">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
+                        Verified Funded Accounts <span className="text-slate-400 font-normal text-base sm:text-2xl md:text-3xl block mt-2">Proof of Execution, Not Promises</span>
                     </h2>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto mb-8 sm:mb-12">
                     {/* FTMO Card */}
                     <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
@@ -91,7 +91,7 @@ const VerifiedAccounts = () => {
                     </div>
                 </div>
 
-                <div className="flex items-center justify-center gap-2 text-center text-slate-400 text-sm max-w-3xl mx-auto">
+                <div className="flex items-start sm:items-center justify-center gap-2 text-center text-slate-400 text-xs sm:text-sm max-w-3xl mx-auto px-2">
                     <Sparkles className="w-4 h-4 text-slate-500" />
                     <p>
                         Certificates shown represent previously completed challenges. Only demonstrates proof of capability, not guarantee of your firm's use.

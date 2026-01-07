@@ -64,26 +64,13 @@ const Hero = () => {
                         <div className="relative z-10 w-full max-w-[800px] mx-auto">
                             {/* Laptop Container */}
                             <div className="relative aspect-[16/10] w-full">
-                                {/* Laptop Frame */}
-                                <div className="relative z-20 w-full h-full">
-                                    <Image
-                                        src="/assets/laptop_frame.png"
-                                        alt="Laptop Frame"
-                                        fill
-                                        className="object-contain"
-                                        priority
-                                    />
-                                </div>
-
-                                {/* Screen Content - Positioned ON TOP of the frame */}
-                                <div className="absolute top-[4%] left-[11%] right-[11%] bottom-[10%] z-30 overflow-hidden bg-black rounded-sm">
-                                    <Image
-                                        src="/assets/laptop_screen.png"
-                                        alt="Trading Chart"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
+                                <Image
+                                    src="/assets/images/hero-laptop.png"
+                                    alt="Trading Laptop"
+                                    fill
+                                    className="object-contain"
+                                    priority
+                                />
                             </div>
 
                             {/* Decorative Elements */}
