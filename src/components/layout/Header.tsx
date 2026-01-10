@@ -22,6 +22,9 @@ const Header = () => {
                         <Link href="/" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                             Home
                         </Link>
+                        <Link href="/#pricing" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
+                            Pricing
+                        </Link>
                         <Link href="/support" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">
                             Support/Contact
                         </Link>
@@ -79,8 +82,8 @@ const Header = () => {
                         <Link href="/" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
                             Home
                         </Link>
-                        <Link href="/features" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
-                            Features
+                        <Link href="/#pricing" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
+                            Pricing
                         </Link>
                         <Link href="/support" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
                             Support/Contact

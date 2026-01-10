@@ -16,7 +16,7 @@ export default function Home() {
       <WhyTradersFail />
       <WhatPropSolDoes />
       <VerifiedAccounts />
-      <ServiceForWho />
+      {/* <ServiceForWho /> */}
       <ChallengeTypes />
 
       <Footer />

@@ -12,7 +12,7 @@ const Footer = () => {
                         </Link>
                         <nav className="flex flex-wrap gap-6 text-sm text-slate-400">
                             <Link href="/" className="hover:text-white transition-colors">Home</Link>
-                            <Link href="/get-started" className="hover:text-white transition-colors">Get Started</Link>
+                            <Link href="/signup" className="hover:text-white transition-colors">Get Started</Link>
                             <Link href="/about" className="hover:text-white transition-colors">About</Link>
                             <Link href="/faq" className="hover:text-white transition-colors">FAQ</Link>
                             <Link href="/support" className="hover:text-white transition-colors">Support</Link>

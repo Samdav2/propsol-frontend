@@ -22,7 +22,7 @@ const HeroNew = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 sm:pt-20">
                 <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 lg:gap-0">
                     {/* Left Content */}
-                    <div className="flex-1 w-full max-w-none lg:w-[60%] z-20 mb-8 sm:mb-20 lg:mb-32 text-center sm:text-left">
+                    <div className="flex-1 w-full max-w-none lg:w-[60%] z-40 mb-8 sm:mb-20 lg:mb-32 text-center sm:text-left">
                         {/* Main Headline */}
                         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[64px] font-bold text-white leading-[1.15] mb-4 tracking-tight">
                             We Pass Your Prop Firm Challenge -
@@ -83,13 +83,13 @@ const HeroNew = () => {
                         {/* Buttons */}
                         <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-3 sm:gap-6 w-full sm:w-auto">
                             <Link
-                                href="/register"
+                                href="/signup"
                                 className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg md:text-xl font-bold text-center text-white bg-[#3b82f6] rounded-md hover:bg-blue-700 transition-all shadow-xl shadow-blue-900/30"
                             >
                                 Get Started Now
                             </Link>
                             <Link
-                                href="/pricing"
+                                href="/#pricing"
                                 className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg md:text-xl font-bold text-center text-[#3b82f6] bg-[#eff6ff] rounded-md hover:bg-white transition-all shadow-xl"
                             >
                                 View Pricing
