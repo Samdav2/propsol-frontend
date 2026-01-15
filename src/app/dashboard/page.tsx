@@ -41,7 +41,15 @@ export default function DashboardPage() {
             // Fetch Accounts Data
             try {
                 const accountsData = await propFirmService.getUserRegistrations();
-                setAccounts(accountsData);
+                // Filter to only show registrations with successful payments
+                const successfulPayments = accountsData.filter(account => {
+                    // If payment_status doesn't exist (old records), show them
+                    // Otherwise, only show if payment is successful (finished or confirmed)
+                    return !account.payment_status ||
+                        account.payment_status === 'finished' ||
+                        account.payment_status === 'confirmed';
+                });
+                setAccounts(successfulPayments);
             } catch (error) {
                 console.error("Error fetching accounts data:", error);
             } finally {

@@ -22,7 +22,7 @@ const HeroNew = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 sm:pt-20">
                 <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 lg:gap-0">
                     {/* Left Content */}
-                    <div className="flex-1 w-full max-w-none lg:w-[60%] z-40 mb-8 sm:mb-20 lg:mb-32 text-center sm:text-left">
+                    <div className="flex-1 w-full max-w-none lg:w-[55%] z-40 mb-8 sm:mb-20 lg:mb-32 text-center sm:text-left lg:pr-8">
                         {/* Main Headline */}
                         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[64px] font-bold text-white leading-[1.15] mb-4 tracking-tight">
                             We Pass Your Prop Firm Challenge -
@@ -34,7 +34,7 @@ const HeroNew = () => {
                         </p>
 
                         {/* Description text */}
-                        <p className="text-slate-200 text-base sm:text-lg md:text-xl mb-8 sm:mb-10 max-w-3xl leading-relaxed font-light mx-auto sm:mx-0">
+                        <p className="text-slate-200 text-base sm:text-lg md:text-xl mb-8 sm:mb-10 max-w-xl lg:max-w-lg leading-relaxed font-light mx-auto sm:mx-0">
                             Accounts are managed in a manner fully compliant with prop firm rules, with limited monthly slots available.
                         </p>
 

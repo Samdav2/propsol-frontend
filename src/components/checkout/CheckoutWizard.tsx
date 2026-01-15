@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { propFirmService } from "@/services/prop-firm.service";
 import { paymentService } from "@/services/payment.service";
 import { userService } from "@/services/user.service";
+import { cryptoPaymentService, CryptoPayment } from "@/services/crypto-payment.service";
 
 // Step Components (will be defined in same file or separate, let's keep them here for now for speed, then refactor if large)
 import { StepChooseFirm } from "./steps/StepChooseFirm";
@@ -22,6 +23,7 @@ import { StepAdditionalInfo } from "./steps/StepAdditionalInfo";
 import { StepLegal } from "./steps/StepLegal";
 import { StepPayment } from "./steps/StepPayment";
 import { StepSuccess } from "./steps/StepSuccess";
+import { StepCryptoPaymentPending } from "./steps/StepCryptoPaymentPending";
 
 export type CheckoutData = {
     propFirm: string;
@@ -43,11 +45,8 @@ export type CheckoutData = {
     telegram: string;
     notes: string;
 
-    // Payment
-    cardName: string;
-    cardNumber: string;
-    expiryDate: string;
-    cvv: string;
+    // Crypto Payment
+    cryptoCurrency?: string;
 
     // Legal
     agreedToTerms: boolean;
@@ -68,10 +67,7 @@ const INITIAL_DATA: CheckoutData = {
     whatsapp: "",
     telegram: "",
     notes: "",
-    cardName: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
+    cryptoCurrency: "btc",
     agreedToTerms: false,
     agreedToRefundPolicy: false,
 };
@@ -82,6 +78,7 @@ export default function CheckoutWizard() {
     const [data, setData] = useState<CheckoutData>(INITIAL_DATA);
     const [loading, setLoading] = useState(false);
     const [orderId, setOrderId] = useState("");
+    const [cryptoPayment, setCryptoPayment] = useState<CryptoPayment | null>(null);
 
     const totalSteps = data.challengeType === "1-Step Challenge" ? 10 : 11;
 
@@ -111,7 +108,7 @@ export default function CheckoutWizard() {
         });
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (paymentFlow: "invoice" | "direct") => {
         setLoading(true);
 
         // Check for authentication
@@ -124,7 +121,7 @@ export default function CheckoutWizard() {
         }
 
         try {
-            // Validate Session explicitly to ensure token is still valid for protected endpoints
+            // Validate Session
             try {
                 await userService.getCurrentUser();
             } catch (error) {
@@ -132,29 +129,14 @@ export default function CheckoutWizard() {
                 throw new Error("Session expired. Please login again.");
             }
 
-            // 1. Validate Date first
-            const [expMonth, expYear] = data.expiryDate.split('/');
-            if (!expMonth || !expYear || isNaN(parseInt(expMonth)) || isNaN(parseInt(expYear))) {
-                throw new Error("Invalid expiry date format. Please use MM/YY.");
-            }
-
-            // Handle 2 digit year (assume 20xx)
-            const fullYear = expYear.length === 2 ? 2000 + parseInt(expYear) : parseInt(expYear);
-            const date = new Date(fullYear, parseInt(expMonth) - 1, 1);
-
-            // Validate date object
-            if (isNaN(date.getTime())) {
-                throw new Error("Invalid expiry date.");
-            }
-
-            // 2. Create Registration
+            // 1. Create Registration
             let registration;
             try {
                 registration = await propFirmService.createRegistration({
                     login_id: data.loginId,
                     password: data.password,
                     propfirm_name: data.propFirm,
-                    propfirm_website_link: "https://example.com", // Placeholder or derived
+                    propfirm_website_link: "https://example.com",
                     server_name: data.serverName,
                     server_type: data.serverType,
                     challenges_step: data.challengeType === "1-Step Challenge" ? 1 : 2,
@@ -179,23 +161,47 @@ export default function CheckoutWizard() {
                 throw new Error(regError?.response?.data?.message || "Failed to create registration. Please check your details.");
             }
 
-            // 3. Create Payment
+            // 2. Create Crypto Payment
             try {
-                await paymentService.createPayment({
-                    card_name: data.cardName,
-                    card_number: data.cardNumber,
-                    card_expiry_date: date.toISOString(),
-                    card_type: "credit", // Detect or default
-                    card_cvv: data.cvv,
-                });
+                const baseUrl = window.location.origin;
+                const successUrl = `${baseUrl}/checkout/success?order_id=${registration.order_id}`;
+                const cancelUrl = `${baseUrl}/checkout`;
+
+                if (paymentFlow === "invoice") {
+                    // Invoice Flow - Redirect to NOWPayments
+                    const payment = await cryptoPaymentService.createInvoice({
+                        price_amount: data.price,
+                        price_currency: "usd",
+                        pay_currency: data.cryptoCurrency,
+                        order_id: registration.order_id,
+                        order_description: `PropSol - ${data.propFirm} ${data.challengeType} - $${data.accountSize}k`,
+                        success_url: successUrl,
+                        cancel_url: cancelUrl,
+                    });
+
+                    // Redirect to invoice URL
+                    if (payment.invoice_url) {
+                        window.location.href = payment.invoice_url;
+                    } else {
+                        throw new Error("Failed to get invoice URL");
+                    }
+                } else {
+                    // Direct Payment Flow - Show payment address
+                    const payment = await cryptoPaymentService.createPayment({
+                        price_amount: data.price,
+                        price_currency: "usd",
+                        pay_currency: data.cryptoCurrency!,
+                        order_id: registration.order_id,
+                        order_description: `PropSol - ${data.propFirm} ${data.challengeType} - $${data.accountSize}k`,
+                    });
+
+                    setCryptoPayment(payment);
+                    setStep(12); // Go to payment pending step
+                }
             } catch (payError: any) {
                 console.error("Payment Error:", payError);
-                // If registration succeeded but payment failed, we might want to inform the user differently
-                // For now, we'll throw a specific payment error
-                throw new Error(payError?.response?.data?.message || "Payment processing failed. Please check your card details.");
+                throw new Error(payError?.response?.data?.message || "Payment creation failed. Please try again.");
             }
-
-            nextStep(); // Go to Success Step
         } catch (error: any) {
             console.error(error);
             toast.error(error.message || "Failed to process order. Please try again.");
@@ -217,7 +223,8 @@ export default function CheckoutWizard() {
             case 9: return <StepAdditionalInfo data={data} updateData={updateData} onNext={nextStep} onBack={prevStep} />;
             case 10: return <StepLegal data={data} updateData={updateData} onNext={nextStep} onBack={prevStep} />;
             case 11: return <StepPayment data={data} updateData={updateData} onSubmit={handleSubmit} onBack={prevStep} loading={loading} />;
-            case 12: return <StepSuccess orderId={orderId} />;
+            case 12: return cryptoPayment ? <StepCryptoPaymentPending payment={cryptoPayment} onComplete={() => setStep(13)} /> : <StepSuccess orderId={orderId} />;
+            case 13: return <StepSuccess orderId={orderId} />;
             default: return null;
         }
     };

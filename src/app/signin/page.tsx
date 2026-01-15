@@ -1,18 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { authService } from "@/services/auth.service";
 
-export default function SignInPage() {
+function SignInForm() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    // Check if user was redirected due to session expiration
+    useEffect(() => {
+        const expired = searchParams.get("expired");
+        if (expired === "true") {
+            toast.error("Your session has expired. Please sign in again.");
+        }
+    }, [searchParams]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -152,5 +161,17 @@ export default function SignInPage() {
                 </div>
             </div>
         </main>
+    );
+}
+
+export default function SignInPage() {
+    return (
+        <Suspense fallback={
+            <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-slate-600">Loading...</div>
+            </main>
+        }>
+            <SignInForm />
+        </Suspense>
     );
 }
