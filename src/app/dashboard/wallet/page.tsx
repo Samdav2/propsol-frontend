@@ -364,7 +364,7 @@ export default function WalletPage() {
                             <ul className="space-y-3 text-sm text-gray-600">
                                 <li className="flex items-start gap-2">
                                     <div className="min-w-[6px] h-[6px] rounded-full bg-green-500 mt-1.5"></div>
-                                    <span><strong>10% Commission</strong> on each referral purchase.</span>
+                                    <span><strong>2% Commission</strong> on each referral purchase.</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                     <div className="min-w-[6px] h-[6px] rounded-full bg-blue-500 mt-1.5"></div>
