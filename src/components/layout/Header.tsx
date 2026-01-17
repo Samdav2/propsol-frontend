@@ -27,7 +27,7 @@ const Header = () => {
                     <nav className="hidden md:flex items-center gap-8">
                         {[
                             { name: "Home", href: "/" },
-                            { name: "Pricing", href: "/#pricing" },
+                            { name: "Pricing", href: "/pricing" },
                             { name: "Support/Contact", href: "/support" },
                             { name: "FAQ", href: "/faq" },
                             { name: "About", href: "/about" },
@@ -95,7 +95,7 @@ const Header = () => {
                         <Link href="/" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
                             Home
                         </Link>
-                        <Link href="/#pricing" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
+                        <Link href="/pricing" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
                             Pricing
                         </Link>
                         <Link href="/support" className="text-lg font-medium text-slate-900 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
