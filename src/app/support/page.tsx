@@ -1,14 +1,52 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Loader2, CheckCircle } from "lucide-react";
+import { supportService } from "@/services/support.service";
+import { toast } from "react-hot-toast";
 
 export default function SupportPage() {
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        message: ""
+    });
+    const [submitting, setSubmitting] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!formData.name || !formData.email || !formData.phone || !formData.message) {
+            toast.error("Please fill in all fields");
+            return;
+        }
+
+        setSubmitting(true);
+        try {
+            await supportService.createTicket(formData);
+            setSubmitted(true);
+            toast.success("Message sent successfully! We'll get back to you soon.");
+            setFormData({ name: "", email: "", phone: "", message: "" });
+        } catch (error) {
+            toast.error("Failed to send message. Please try again.");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
         <main className="min-h-screen bg-white">
             <Header />
 
-            {/* Hero Section */}
             {/* Hero Section */}
             <section className="pt-32 pb-0 md:pt-40 lg:pt-48 lg:pb-0 bg-gradient-to-br from-blue-50 via-white to-blue-100 relative overflow-hidden h-auto lg:h-[800px]">
                 {/* Background Elements */}
@@ -193,42 +231,80 @@ export default function SupportPage() {
                             </div>
 
                             <div className="bg-white rounded-2xl shadow-xl p-8 lg:p-12 border border-slate-100 relative z-10">
-                                <form className="space-y-6">
-                                    <div>
-                                        <input
-                                            type="text"
-                                            placeholder="Your Name"
-                                            className="w-full px-6 py-4 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-slate-600 placeholder:text-slate-400"
-                                        />
+                                {submitted ? (
+                                    <div className="text-center py-8">
+                                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <CheckCircle className="w-8 h-8 text-green-600" />
+                                        </div>
+                                        <h3 className="text-2xl font-bold text-slate-900 mb-2">Message Sent!</h3>
+                                        <p className="text-slate-600 mb-6">
+                                            Thank you for reaching out. We'll get back to you within 12-24 hours.
+                                        </p>
+                                        <button
+                                            onClick={() => setSubmitted(false)}
+                                            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                                        >
+                                            Send Another Message
+                                        </button>
                                     </div>
-                                    <div>
-                                        <input
-                                            type="email"
-                                            placeholder="Your Email"
-                                            className="w-full px-6 py-4 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-slate-600 placeholder:text-slate-400"
-                                        />
-                                    </div>
-                                    <div>
-                                        <input
-                                            type="tel"
-                                            placeholder="Your Phone"
-                                            className="w-full px-6 py-4 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-slate-600 placeholder:text-slate-400"
-                                        />
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            rows={4}
-                                            placeholder="Your Message"
-                                            className="w-full px-6 py-4 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-slate-600 placeholder:text-slate-400 resize-none"
-                                        />
-                                    </div>
-                                    <button
-                                        type="submit"
-                                        className="w-full py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20"
-                                    >
-                                        Send Message
-                                    </button>
-                                </form>
+                                ) : (
+                                    <form onSubmit={handleSubmit} className="space-y-6">
+                                        <div>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                placeholder="Your Name"
+                                                className="w-full px-6 py-4 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-slate-600 placeholder:text-slate-400"
+                                            />
+                                        </div>
+                                        <div>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                placeholder="Your Email"
+                                                className="w-full px-6 py-4 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-slate-600 placeholder:text-slate-400"
+                                            />
+                                        </div>
+                                        <div>
+                                            <input
+                                                type="tel"
+                                                name="phone"
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                placeholder="Your Phone"
+                                                className="w-full px-6 py-4 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-slate-600 placeholder:text-slate-400"
+                                            />
+                                        </div>
+                                        <div>
+                                            <textarea
+                                                name="message"
+                                                value={formData.message}
+                                                onChange={handleChange}
+                                                rows={4}
+                                                placeholder="Your Message"
+                                                className="w-full px-6 py-4 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-slate-600 placeholder:text-slate-400 resize-none"
+                                            />
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            disabled={submitting}
+                                            className="w-full py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                        >
+                                            {submitting ? (
+                                                <>
+                                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                                    Sending...
+                                                </>
+                                            ) : (
+                                                "Send Message"
+                                            )}
+                                        </button>
+                                    </form>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -9,7 +9,9 @@ import {
     Settings,
     LogOut,
     Briefcase,
-    ArrowUpRight
+    ArrowUpRight,
+    Share2,
+    MessageCircle
 } from "lucide-react";
 
 export function AdminSidebar() {
@@ -32,6 +34,11 @@ export function AdminSidebar() {
             href: "/admin/users"
         },
         {
+            title: "Affiliates",
+            icon: Share2,
+            href: "/admin/affiliates"
+        },
+        {
             title: "Prop Firms",
             icon: Briefcase,
             href: "/admin/prop-firm"
@@ -43,8 +50,13 @@ export function AdminSidebar() {
         },
         {
             title: "Transactions",
-            icon: ArrowUpRight, // Using ArrowUpRight as a generic transaction icon, need to import it
+            icon: ArrowUpRight,
             href: "/admin/transactions"
+        },
+        {
+            title: "Support Messages",
+            icon: MessageCircle,
+            href: "/admin/support"
         },
         {
             title: "Assign Package",
@@ -58,7 +70,7 @@ export function AdminSidebar() {
         },
         {
             title: "Register Admin",
-            icon: Users, // Reusing Users icon or could import UserPlus
+            icon: Users,
             href: "/admin/register"
         }
     ];

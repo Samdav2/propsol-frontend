@@ -18,7 +18,7 @@ export interface PropFirmRegistration {
     whatsapp_no: string;
     telegram_username: string;
     account_status: "pending" | "in_progress" | "passed" | "failed";
-    payment_status?: "pending" | "waiting" | "confirming" | "confirmed" | "finished" | "failed" | "refunded" | "expired";
+    payment_status?: "pending" | "waiting" | "confirming" | "confirmed" | "finished" | "completed" | "successful" | "failed" | "refunded" | "expired";
     order_id: string;
     created_at: string;
     updated_at: string;
