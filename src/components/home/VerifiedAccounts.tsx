@@ -10,7 +10,7 @@ const VerifiedAccounts = () => {
             {/* Curved Top Divider */}
             <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] z-10">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-[calc(100%+1.3px)] h-[60px] sm:h-[100px]">
-                    <path d="M0,0 L1200,0 L1200,20 C1200,20 900,100 600,100 C300,100 0,20 0,20 Z" className="fill-slate-50"></path>
+                    <path d="M0,0 L1200,0 L1200,20 C1200,20 900,100 600,100 C300,100 0,20 0,20 Z" className="fill-[#e0eaf8]"></path>
                 </svg>
             </div>
 

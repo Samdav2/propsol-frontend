@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, CheckCircle, Shield, AlertTriangle, Info } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -81,6 +81,35 @@ export default function CheckoutWizard() {
     const [cryptoPayment, setCryptoPayment] = useState<CryptoPayment | null>(null);
 
     const totalSteps = data.challengeType === "1-Step Challenge" ? 10 : 11;
+
+    // Handle browser back button - navigate to previous step instead of leaving
+    useEffect(() => {
+        // Push initial state
+        window.history.pushState({ step: step }, '');
+
+        const handlePopState = (event: PopStateEvent) => {
+            if (step > 1) {
+                // Prevent leaving the page, go to previous step
+                event.preventDefault();
+                setStep((prev) => {
+                    let back = prev - 1;
+                    // Skip Step 3 (Scope) if 1-Step Challenge
+                    if (back === 3 && data.challengeType === "1-Step Challenge") {
+                        back = 2;
+                    }
+                    return Math.max(back, 1);
+                });
+                // Push new state to maintain history
+                window.history.pushState({ step: step - 1 }, '');
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [step, data.challengeType]);
 
     const updateData = (updates: Partial<CheckoutData>) => {
         setData((prev) => ({ ...prev, ...updates }));
@@ -235,14 +264,18 @@ export default function CheckoutWizard() {
             {step < 11 && (
                 <div className="w-full max-w-4xl mb-8">
                     <div className="flex justify-between items-center mb-4">
-                        <button
-                            onClick={prevStep}
-                            disabled={step === 1}
-                            className={`flex items-center text-sm text-gray-400 hover:text-white transition ${step === 1 ? 'opacity-0' : ''}`}
-                        >
-                            <ArrowLeft className="w-4 h-4 mr-2" /> Back
-                        </button>
-                        <div className="text-sm font-medium text-blue-400">
+                        {step > 1 ? (
+                            <button
+                                onClick={prevStep}
+                                className="flex items-center gap-2 px-4 py-2 text-white bg-white/10 hover:bg-white/20 rounded-lg transition-all font-medium"
+                            >
+                                <ArrowLeft className="w-5 h-5" />
+                                <span>Back</span>
+                            </button>
+                        ) : (
+                            <div></div>
+                        )}
+                        <div className="text-sm font-medium text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-full">
                             Step {data.challengeType === "1-Step Challenge" && step > 3 ? step - 1 : step} of {totalSteps}
                         </div>
                     </div>

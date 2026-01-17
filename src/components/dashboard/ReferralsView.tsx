@@ -22,8 +22,10 @@ export function ReferralsView() {
         fetchStats();
     }, []);
 
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+
     const referralLink = stats?.referral_code
-        ? `${typeof window !== 'undefined' ? window.location.origin : ''}/register?ref=${stats.referral_code}`
+        ? `${baseUrl}/register?ref=${stats.referral_code}`
         : "Loading...";
 
     const handleCopy = async () => {
@@ -47,7 +49,7 @@ export function ReferralsView() {
                     url: referralLink,
                 });
             } catch (err) {
-                console.log('Error sharing:', err);
+                // Silent fail for share cancellation
             }
         } else {
             handleCopy();
@@ -66,6 +68,9 @@ export function ReferralsView() {
                 </h3>
                 <p className="mb-6 text-xs text-gray-500">
                     Once your referral's account is successfully passed, you instantly earn <span className="font-bold text-gray-900">2%</span>, available for immediate withdrawal.
+                    <a href="/dashboard/wallet" className="ml-1 text-blue-600 hover:underline font-medium">
+                        Go to Wallet
+                    </a>
                 </p>
 
                 <div className="mb-8 text-left">

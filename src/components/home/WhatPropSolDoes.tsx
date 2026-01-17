@@ -24,7 +24,7 @@ const benefits = [
 
 const WhatPropSolDoes = () => {
     return (
-        <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden bg-gradient-to-b from-[#d8e5f7] via-[#e0eaf8] to-[#e8eef8]">
+        <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden bg-[#e0eaf8]">
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
                     {/* Left Column - What PropSol Does */}

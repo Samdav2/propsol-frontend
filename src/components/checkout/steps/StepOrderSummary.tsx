@@ -24,7 +24,7 @@ export function StepOrderSummary({ data, onNext }: Props) {
                     </div>
                     <div>
                         <div className="text-xs text-gray-500 uppercase mb-1">Scope</div>
-                        <div className="font-medium">Step 1 Only</div> {/* Hardcoded based on image? Or derived? Image says "Step 1 Only" but user selected "2-Step Challenge". Maybe scope means what PropSol does? If it's a 2-step challenge, does PropSol do both? Usually yes. Image 3 shows "Scope: Step 1 Only". Maybe for 2-step challenge they only pay for step 1 first? I'll leave as "Full Evaluation" or derived. */}
+                        <div className="font-medium">{data.scope || "Full Pass"}</div>
                     </div>
                     <div>
                         <div className="text-xs text-gray-500 uppercase mb-1">Account Size</div>

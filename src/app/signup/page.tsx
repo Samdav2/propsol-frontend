@@ -10,7 +10,8 @@ import { authService } from "@/services/auth.service";
 export default function SignUpPage() {
     const router = useRouter();
     const [formData, setFormData] = useState({
-        fullName: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: "",
         referralCode: "",
@@ -31,7 +32,7 @@ export default function SignUpPage() {
         try {
             const response = await authService.register({
                 email: formData.email,
-                name: formData.fullName,
+                name: `${formData.firstName} ${formData.lastName}`.trim(),
                 password: formData.password,
                 referred_by: formData.referralCode || undefined,
             });
@@ -102,19 +103,35 @@ export default function SignUpPage() {
                     )}
 
                     <form onSubmit={handleRegister} className="space-y-6">
-                        <div>
-                            <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 mb-2">
-                                Full Name
-                            </label>
-                            <input
-                                type="text"
-                                id="fullName"
-                                value={formData.fullName}
-                                onChange={handleChange}
-                                placeholder="Enter Name"
-                                required
-                                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#1234A6] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 placeholder:text-gray-300"
-                            />
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <div className="w-full sm:w-1/2">
+                                <label htmlFor="firstName" className="block text-sm font-medium text-slate-700 mb-2">
+                                    First Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleChange}
+                                    placeholder="First Name"
+                                    required
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#1234A6] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 placeholder:text-gray-300"
+                                />
+                            </div>
+                            <div className="w-full sm:w-1/2">
+                                <label htmlFor="lastName" className="block text-sm font-medium text-slate-700 mb-2">
+                                    Last Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleChange}
+                                    placeholder="Last Name"
+                                    required
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#1234A6] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-slate-600 placeholder:text-gray-300"
+                                />
+                            </div>
                         </div>
 
                         <div>

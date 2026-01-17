@@ -43,7 +43,7 @@ const reasons = [
 
 const WhyTradersFail = () => {
     return (
-        <section className="py-12 sm:py-16 bg-gradient-to-b from-[#f8faff] to-[#d8e5f7]">
+        <section className="py-12 sm:py-16 bg-[#e0eaf8]">
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="text-center mb-8 sm:mb-10">
                     <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900">

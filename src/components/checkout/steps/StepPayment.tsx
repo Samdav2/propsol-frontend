@@ -21,15 +21,19 @@ export function StepPayment({ data, updateData, onSubmit, loading }: Props) {
     const [loadingCurrencies, setLoadingCurrencies] = useState(true);
     const [copied, setCopied] = useState(false);
 
+    // Preferred crypto currencies in order
+    const preferredCurrencies = ["btc", "usdttrc20", "eth", "ltc", "bnb", "trx", "usdc"];
+
     // Common crypto currencies with friendly names
     const currencyNames: Record<string, string> = {
         btc: "Bitcoin",
+        usdttrc20: "USDT TRC20",
         eth: "Ethereum",
-        usdt: "Tether (USDT)",
-        usdc: "USD Coin",
         ltc: "Litecoin",
         bnb: "BNB",
-        trx: "TRON",
+        trx: "TRON (TRX)",
+        usdc: "USD Coin (USDC)",
+        usdt: "Tether (USDT)",
         sol: "Solana",
     };
 
@@ -48,12 +52,19 @@ export function StepPayment({ data, updateData, onSubmit, loading }: Props) {
     const loadCurrencies = async () => {
         try {
             const response = await cryptoPaymentService.getAvailableCurrencies();
-            setCurrencies(response.currencies || []);
+            const available = response.currencies || [];
+            
+            // Sort currencies: preferred ones first, then others
+            const sorted = [
+                ...preferredCurrencies.filter(c => available.includes(c)),
+                ...available.filter(c => !preferredCurrencies.includes(c))
+            ];
+            
+            setCurrencies(sorted.length > 0 ? sorted : preferredCurrencies);
             setLoadingCurrencies(false);
         } catch (error) {
-            console.error("Failed to load currencies:", error);
-            // Fallback to common currencies
-            setCurrencies(["btc", "eth", "usdt", "ltc"]);
+            // Fallback to preferred currencies
+            setCurrencies(preferredCurrencies);
             setLoadingCurrencies(false);
         }
     };
@@ -68,7 +79,7 @@ export function StepPayment({ data, updateData, onSubmit, loading }: Props) {
             );
             setEstimatedAmount(response.estimated_amount);
         } catch (error) {
-            console.error("Failed to load estimate:", error);
+            // Failed to load estimate, set to null
             setEstimatedAmount(null);
         } finally {
             setLoadingEstimate(false);

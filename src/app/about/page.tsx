@@ -41,7 +41,7 @@ export default function AboutPage() {
                                 <div className="flex flex-col gap-4 sm:gap-6">
                                     <div className="relative w-[100px] h-[100px] sm:w-[200px] sm:h-[200px] rounded-2xl overflow-hidden">
                                         <Image
-                                            src="/assets/about_trust_top.jpg"
+                                            src="/assets/about_trust_top_new.jpg"
                                             alt="Team Member"
                                             fill
                                             className="object-cover"
@@ -49,7 +49,7 @@ export default function AboutPage() {
                                     </div>
                                     <div className="relative w-[100px] h-[100px] sm:w-[200px] sm:h-[200px] rounded-2xl overflow-hidden">
                                         <Image
-                                            src="/assets/about_trust_bottom.jpg"
+                                            src="/assets/about_trust_bottom_new.jpg"
                                             alt="Team Member"
                                             fill
                                             className="object-cover"
@@ -59,7 +59,7 @@ export default function AboutPage() {
                                 <div className="relative">
                                     <div className="relative w-[130px] h-[180px] sm:w-[270px] sm:h-[340px] rounded-2xl overflow-hidden z-10">
                                         <Image
-                                            src="/assets/about_trust_main.jpg"
+                                            src="/assets/about_trust_main_new.jpg"
                                             alt="Team Member"
                                             fill
                                             className="object-cover"

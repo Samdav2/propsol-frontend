@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const HeroNew = () => {
     return (
-        <section className="relative bg-[#0a0e27] overflow-hidden min-h-[100svh] sm:min-h-[850px] flex items-center pb-16 sm:pb-0">
+        <section className="relative bg-[#0a0e27] overflow-visible min-h-[100svh] sm:min-h-[800px] flex items-center pb-5 sm:pb-0 lg:pb-7">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
@@ -19,30 +19,32 @@ const HeroNew = () => {
                 <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#0a0e27]/95 via-[#0a0e27]/70 to-[#0a0e27]/50 sm:from-[#0a0e27]/90 sm:via-[#0a0e27]/40 sm:to-transparent" />
             </div>
 
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 sm:pt-20">
-                <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 lg:gap-0">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 sm:pt-20 md:pt-32 lg:mt-40">
+                {/* Headlines - positioned above the two-column layout */}
+                <div className="w-full lg:max-w-[80%] mb-4 text-center lg:text-left">
+                    <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-4xl font-bold text-white mb-2 tracking-tight lg:whitespace-nowrap">
+                        We Pass Your Prop Firm Challenge -
+                    </h1>
+
+                    {/* Subheadline */}
+                    <p className="text-xl sm:text-3xl md:text-4xl lg:text-[2.8rem] text-[#fbbf24] font-light mb-4 leading-tight lg:whitespace-nowrap">
+                        Or You Get a Full Refund + $100 Compensation
+                    </p>
+                </div>
+
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-0">
                     {/* Left Content */}
-                    <div className="flex-1 w-full max-w-none lg:w-[55%] z-40 mb-8 sm:mb-20 lg:mb-32 text-center sm:text-left lg:pr-8">
-                        {/* Main Headline */}
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[64px] font-bold text-white leading-[1.15] mb-4 tracking-tight">
-                            We Pass Your Prop Firm Challenge -
-                        </h1>
-
-                        {/* Subheadline */}
-                        <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[40px] text-[#fbbf24] font-normal mb-6 sm:mb-8 leading-tight">
-                            Or You Get a Full Refund + $100 Compensation
-                        </p>
-
+                    <div className="w-full lg:w-[45%] z-30 text-center lg:text-left pt-8">
                         {/* Description text */}
-                        <p className="text-slate-200 text-base sm:text-lg md:text-xl mb-8 sm:mb-10 max-w-xl lg:max-w-lg leading-relaxed font-light mx-auto sm:mx-0">
+                        <p className="text-slate-200 text-base sm:text-lg lg:text-xl mb-8 sm:mb-10 max-w-xl lg:max-w-lg leading-relaxed font-light mx-auto lg:mx-0">
                             Accounts are managed in a manner fully compliant with prop firm rules, with limited monthly slots available.
                         </p>
 
-                        {/* Partner Logos - Mobile: 2 columns, Desktop: row */}
-                        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-8 lg:gap-12 mb-8 sm:mb-12 opacity-100">
+                        {/* Partner Logos */}
+                        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 lg:gap-6 mb-8 sm:mb-12 opacity-100">
                             {/* FundedNext */}
-                            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3">
-                                <div className="relative w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10">
+                            <div className="flex items-center justify-center lg:justify-start gap-2">
+                                <div className="relative w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8">
                                     <Image
                                         src="/assets/funded_next_logo.png"
                                         alt="FundedNext"
@@ -50,12 +52,12 @@ const HeroNew = () => {
                                         className="object-contain brightness-0 invert"
                                     />
                                 </div>
-                                <span className="font-semibold text-white text-sm sm:text-xl md:text-2xl">FundedNext</span>
+                                <span className="font-semibold text-white text-xs sm:text-sm lg:text-base">FundedNext</span>
                             </div>
 
                             {/* FundingPips */}
-                            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3">
-                                <div className="relative w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10">
+                            <div className="flex items-center justify-center lg:justify-start gap-2">
+                                <div className="relative w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8">
                                     <Image
                                         src="/assets/funding_pips_logo.png"
                                         alt="FundingPips"
@@ -63,12 +65,12 @@ const HeroNew = () => {
                                         className="object-contain brightness-0 invert"
                                     />
                                 </div>
-                                <span className="font-semibold text-white text-sm sm:text-xl md:text-2xl">FundingPips</span>
+                                <span className="font-semibold text-white text-xs sm:text-sm lg:text-base">FundingPips</span>
                             </div>
 
-                            {/* FTMO - Center on mobile */}
-                            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 col-span-2 sm:col-span-1">
-                                <div className="relative w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10">
+                            {/* FTMO */}
+                            <div className="flex items-center justify-center lg:justify-start gap-2">
+                                <div className="relative w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7">
                                     <Image
                                         src="/assets/ftmo_logo.png"
                                         alt="FTMO"
@@ -76,21 +78,21 @@ const HeroNew = () => {
                                         className="object-contain brightness-0 invert"
                                     />
                                 </div>
-                                <span className="font-bold text-white text-sm sm:text-xl md:text-2xl">FTMO</span>
+                                <span className="font-bold text-white text-xs sm:text-sm lg:text-base">FTMO</span>
                             </div>
                         </div>
 
                         {/* Buttons */}
-                        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-3 sm:gap-6 w-full sm:w-auto">
+                        <div className="flex flex-col md:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6 w-full lg:w-auto">
                             <Link
                                 href="/signup"
-                                className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg md:text-xl font-bold text-center text-white bg-[#3b82f6] rounded-md hover:bg-blue-700 transition-all shadow-xl shadow-blue-900/30"
+                                className="w-full md:w-auto px-6 sm:px-8 py-3.5 sm:py-4 text-lg sm:text-lg font-bold text-center text-white bg-[#3b82f6] rounded-md hover:bg-blue-700 transition-all shadow-xl shadow-blue-900/30 whitespace-nowrap"
                             >
                                 Get Started Now
                             </Link>
                             <Link
                                 href="/#pricing"
-                                className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg md:text-xl font-bold text-center text-[#3b82f6] bg-[#eff6ff] rounded-md hover:bg-white transition-all shadow-xl"
+                                className="w-full md:w-auto px-6 sm:px-8 py-3.5 sm:py-4 text-lg sm:text-lg font-bold text-center text-[#3b82f6] bg-white rounded-md hover:bg-gray-50 transition-all shadow-xl whitespace-nowrap"
                             >
                                 View Pricing
                             </Link>
@@ -98,19 +100,20 @@ const HeroNew = () => {
                     </div>
 
                     {/* Right Content - Laptop Image */}
-                    <div className="flex-1 relative w-full lg:w-[50%] lg:-ml-20 xl:-ml-32 mt-4 sm:mt-12 lg:mt-0 z-30 translate-y-4 sm:translate-y-12 lg:translate-y-24">
-                        <div className="relative w-full aspect-[16/10] scale-150 sm:scale-125 lg:scale-150 origin-center lg:origin-bottom-right">
+                    <div className="relative w-full lg:w-[85%] z-20 mt-12 lg:-mt-12 lg:-mr-5">
+                        <div className="w-full scale-100 sm:scale-100 lg:scale-107 origin-top-right pt-20">
                             <Image
                                 src="/assets/images/hero-laptop.png"
                                 alt="Trading Laptop"
-                                fill
-                                className="object-contain"
+                                className="object-contain w-full h-auto"
                                 priority
+                                width={1000}
+                                height={1000}
                             />
                         </div>
 
-                        {/* Single Floating Star - visible on all screens */}
-                        <div className="absolute -bottom-8 -left-6 sm:-bottom-10 sm:-left-10 w-28 h-28 sm:w-44 sm:h-44 md:w-60 md:h-60 z-30 animate-float pointer-events-none">
+                        {/* Single Floating Star - positioned at bottom left of laptop */}
+                        <div className="absolute bottom-[-15%] left-[-15%] w-24 h-24 sm:w-32 sm:h-32 lg:w-48 lg:h-48 z-30 animate-float pointer-events-none">
                             <Image
                                 src="/assets/star.png"
                                 alt="Star"

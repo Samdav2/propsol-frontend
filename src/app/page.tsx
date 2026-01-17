@@ -10,7 +10,7 @@ import ChallengeTypes from "@/components/home/ChallengeTypes";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0a0e27]">
+    <main className="min-h-screen bg-[#e0eaf8]">
       <Header />
       <HeroNew />
       <WhyTradersFail />
