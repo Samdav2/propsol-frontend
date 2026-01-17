@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -14,13 +14,37 @@ function VerifyEmailContent() {
     const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
     const [message, setMessage] = useState("Verifying your email...");
 
+    // Track if verification has been attempted to prevent duplicate calls
+    const hasVerified = useRef(false);
+    // Track if this is the initial mount
+    const isInitialMount = useRef(true);
+
     useEffect(() => {
+        // Skip verification on initial mount if token is null
+        // This handles the case where searchParams haven't hydrated yet
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            // If token is null on initial mount, wait for the next effect run
+            // where searchParams should be properly hydrated
+            if (token === null) {
+                return;
+            }
+        }
+
         const verify = async () => {
+            // Prevent duplicate verification attempts
+            if (hasVerified.current) {
+                return;
+            }
+
             if (!token) {
                 setStatus("error");
                 setMessage("Invalid or missing verification token.");
                 return;
             }
+
+            // Mark as verified before making the API call
+            hasVerified.current = true;
 
             try {
                 await authService.verifyEmail(token);
