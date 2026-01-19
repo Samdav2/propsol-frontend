@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Plus, Wallet } from "lucide-react";
+import { Headphones, Plus, Wallet } from "lucide-react";
 import { User } from "@/services/user.service";
 
 interface DashboardHeroProps {
@@ -36,6 +36,17 @@ export function DashboardHero({ user }: DashboardHeroProps) {
                         </div>
                         <span className="text-[10px] font-bold text-blue-700 md:text-xs">Wallet</span>
                     </Link>
+
+                    <Link
+                        href="/dashboard/support"
+                        className="group flex flex-col items-center justify-center gap-1 rounded-xl bg-red-50 px-3 py-1.5 transition-all duration-200 hover:bg-red-100 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 border border-red-100 md:px-4 md:py-2"
+                        title="Support"
+                    >
+                        <div className="rounded-full bg-red-100 p-1.5 group-hover:bg-red-200 transition-colors md:p-2">
+                            <Headphones className="h-5 w-5 text-red-600 md:h-6 md:w-6" />
+                        </div>
+                        <span className="text-[10px] font-bold text-red-700 md:text-xs">Support</span>
+                        </Link>
 
                 </div>
 

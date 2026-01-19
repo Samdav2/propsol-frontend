@@ -54,9 +54,14 @@ export function AdminSidebar() {
             href: "/admin/transactions"
         },
         {
-            title: "Support Messages",
+            title: "Support Tickets",
             icon: MessageCircle,
             href: "/admin/support"
+        },
+        {
+            title: "Support Messages",
+            icon: MessageCircle,
+            href: "/admin/messages"
         },
         {
             title: "Assign Package",

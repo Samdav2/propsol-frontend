@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { User as UserIcon } from "lucide-react";
+import { User as UserIcon, Headphones, Wallet } from "lucide-react";
 import { User } from "@/services/user.service";
 
 interface DashboardHeaderProps {
@@ -49,7 +49,11 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
                 </div>
 
                 {/* Right Section: User Profile & Action Button */}
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4">
+                    {/* Quick Action Icons */}
+                    
+
+                    {/* User Profile */}
                     <div className="flex items-center gap-3">
                         <div className="relative h-10 w-10 overflow-hidden rounded-full border border-gray-200 bg-gray-100">
                             <Image
