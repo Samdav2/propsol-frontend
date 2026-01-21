@@ -40,53 +40,41 @@ const VerifiedAccounts = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto mb-8 sm:mb-12">
                     {/* FTMO Card */}
-                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
-                        <div className="relative flex flex-col items-center text-center">
-                            <div className="relative w-32 h-12 mb-6 group-hover:scale-110 transition-transform duration-300">
-                                <Image
-                                    src="/assets/ftmo_logo.png"
-                                    alt="FTMO"
-                                    fill
-                                    className="object-contain brightness-0 invert"
-                                />
-                            </div>
-                            <div className="h-1 w-12 bg-blue-500 rounded-full mb-4" />
-                            <p className="text-slate-300 font-medium">Account Passing Process</p>
+                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="relative aspect-[4/3] w-full">
+                            <Image
+                                src="/assets/certificate_ftmo.jpg"
+                                alt="FTMO Certificate"
+                                fill
+                                className="object-cover hover:scale-105 transition-transform duration-500"
+                            />
                         </div>
                     </div>
 
                     {/* FundedNext Card */}
-                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
-                        <div className="relative flex flex-col items-center text-center">
-                            <div className="relative w-40 h-12 mb-6 group-hover:scale-110 transition-transform duration-300">
-                                <Image
-                                    src="/assets/funded_next_logo.png"
-                                    alt="FundedNext"
-                                    fill
-                                    className="object-contain brightness-0 invert"
-                                />
-                            </div>
-                            <div className="h-1 w-12 bg-orange-500 rounded-full mb-4" />
-                            <p className="text-slate-300 font-medium">Account Passing Process</p>
+                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="relative aspect-[4/3] w-full">
+                            <Image
+                                src="/assets/certificate_funded_next.png"
+                                alt="FundedNext Certificate"
+                                fill
+                                className="object-cover hover:scale-105 transition-transform duration-500"
+                            />
                         </div>
                     </div>
 
                     {/* FundingPips Card */}
-                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
-                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
-                        <div className="relative flex flex-col items-center text-center">
-                            <div className="relative w-40 h-12 mb-6 group-hover:scale-110 transition-transform duration-300">
-                                <Image
-                                    src="/assets/funding_pips_logo.png"
-                                    alt="FundingPips"
-                                    fill
-                                    className="object-contain brightness-0 invert"
-                                />
-                            </div>
-                            <div className="h-1 w-12 bg-emerald-500 rounded-full mb-4" />
-                            <p className="text-slate-300 font-medium">Account Passing Process</p>
+                    <div className="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="relative aspect-[4/3] w-full">
+                            <Image
+                                src="/assets/certificate_funding_pips.png"
+                                alt="FundingPips Certificate"
+                                fill
+                                className="object-cover hover:scale-105 transition-transform duration-500"
+                            />
                         </div>
                     </div>
                 </div>
