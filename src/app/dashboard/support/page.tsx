@@ -24,6 +24,7 @@ import {
 } from "@/services/support-ticket.service";
 import { userService, User } from "@/services/user.service";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 export default function UserSupportPage() {
     const [user, setUser] = useState<User | null>(null);
@@ -179,6 +180,10 @@ export default function UserSupportPage() {
                 {/* Header */}
                 <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
+                        <Link href="/dashboard" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 mb-4">
+                            <ArrowLeft className="w-4 h-4 mr-1" />
+                            Back to Dashboard
+                        </Link>
                         <h1 className="text-2xl font-bold text-gray-900">Support Center</h1>
                         <p className="text-gray-500">Get help with your account and services</p>
                     </div>

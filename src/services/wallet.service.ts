@@ -53,9 +53,12 @@ export interface WithdrawalRequest {
     paypal_email?: string;
     status: WithdrawalStatus;
     admin_notes?: string;
+    rejection_reason?: string;
     processed_at?: string;
     created_at: string;
     updated_at: string;
+    user_name?: string;
+    user_email?: string;
 }
 
 // --- Request DTOs ---
@@ -159,5 +162,63 @@ export const walletService = {
             if (Array.isArray(data.data)) return data.data;
         }
         return Array.isArray(response.data) ? response.data : [];
+    },
+
+    /**
+     * Get all withdrawals (Admin)
+     */
+    async getAdminWithdrawals(status?: string): Promise<WithdrawalRequest[]> {
+        const response = await api.get<any>('/admin/withdrawals', {
+            params: { status }
+        });
+
+        // Handle wrapped response
+        if (response.data && typeof response.data === 'object' && !Array.isArray(response.data)) {
+            const data = response.data;
+            if (Array.isArray(data.withdrawals)) return data.withdrawals;
+            if (Array.isArray(data.items)) return data.items;
+            if (Array.isArray(data.data)) return data.data;
+        }
+
+        return Array.isArray(response.data) ? response.data : [];
+    },
+
+    /**
+     * Approve a withdrawal request (Admin)
+     */
+    async approveWithdrawal(withdrawalId: string): Promise<{ message: string; batch_withdrawal_id: string; payout_id: string; status: string }> {
+        const response = await api.post(`/admin/withdrawals/${withdrawalId}/approve`);
+        return response.data;
+    },
+
+    /**
+     * Verify a payout batch with 2FA (Admin)
+     */
+    async verifyPayout(batchId: string, verificationCode: string): Promise<{ message: string }> {
+        const response = await api.post('/admin/withdrawals/verify', null, {
+            params: {
+                batch_id: batchId,
+                verification_code: verificationCode
+            }
+        });
+        return response.data;
+    },
+
+    /**
+     * List NOWPayments payouts (Admin)
+     */
+    async getNowPaymentsPayouts(limit: number = 10, page: number = 0): Promise<any> {
+        const response = await api.get('/admin/withdrawals/nowpayments', {
+            params: { limit, page }
+        });
+        return response.data;
+    },
+
+    /**
+     * Update withdrawal status (Admin)
+     */
+    async updateWithdrawalStatus(withdrawalId: string, data: { status: string; admin_notes?: string; rejection_reason?: string }): Promise<WithdrawalRequest> {
+        const response = await api.patch<WithdrawalRequest>(`/admin/withdrawals/${withdrawalId}`, data);
+        return response.data;
     }
 };

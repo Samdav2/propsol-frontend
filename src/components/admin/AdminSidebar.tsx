@@ -49,6 +49,11 @@ export function AdminSidebar() {
             href: "/admin/payments"
         },
         {
+            title: "Payouts",
+            icon: ArrowUpRight,
+            href: "/admin/payouts"
+        },
+        {
             title: "Transactions",
             icon: ArrowUpRight,
             href: "/admin/transactions"
