@@ -1,15 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { User as UserIcon, Headphones, Wallet } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 import { User } from "@/services/user.service";
+import { authService } from "@/services/auth.service";
 
 interface DashboardHeaderProps {
     user?: User;
 }
 
 export function DashboardHeader({ user }: DashboardHeaderProps) {
+    const router = useRouter();
+
+    const handleLogout = () => {
+        authService.logout();
+        router.push("/signin");
+    };
+
     return (
         <header className="sticky top-0 z-50 border-b border-gray-100 bg-white">
             <div className="container mx-auto flex h-20 items-center justify-between px-4">
@@ -51,22 +59,17 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
                 {/* Right Section: User Profile & Action Button */}
                 <div className="flex items-center gap-4">
                     {/* Quick Action Icons */}
-                    
+
 
                     {/* User Profile */}
                     <div className="flex items-center gap-3">
-                        <div className="relative h-10 w-10 overflow-hidden rounded-full border border-gray-200 bg-gray-100">
-                            <Image
-                                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "User")}&background=random&color=fff`}
-                                alt={user?.name || "User"}
-                                fill
-                                className="object-cover"
-                            />
-                        </div>
-                        <div className="hidden flex-col sm:flex">
-                            <span className="text-sm font-bold text-gray-900">{user?.name || "Loading..."}</span>
-                            <span className="text-xs text-gray-500">{user?.email || ""}</span>
-                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+                        >
+                            <LogOut className="w-4 h-4" />
+                            <span>Logout</span>
+                        </button>
                     </div>
 
 
