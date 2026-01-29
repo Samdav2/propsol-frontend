@@ -2,7 +2,7 @@ import Image from "next/image";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
-export default function TermsPage() {
+export default function PrivacyPage() {
     return (
         <main className="min-h-screen bg-white overflow-x-hidden">
             <Header />
@@ -11,10 +11,10 @@ export default function TermsPage() {
                 {/* Page Title & Intro */}
                 <div className="max-w-3xl mx-auto text-center mb-20">
                     <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-8">
-                        Terms & Conditions
+                        Privacy Policy
                     </h1>
                     <p className="text-lg text-slate-600 leading-relaxed">
-                        PropSol provides a specialized service that helps traders pass their proprietary firm account challenges within 30 days. This includes expert trading management, real-time progress tracking, and post-passing support for live trading.
+                        At PropSol, we value your privacy. This policy outlines how we collect, use, and protect your personal information.
                     </p>
                 </div>
 
@@ -309,7 +309,7 @@ export default function TermsPage() {
                             </div>
 
                             {/* Star Image - Centered vertically, shifted down */}
-                            <div className="absolute top-1/2 translate-y-[30%] lg:-right-10 xl:-right-32 lg:w-[370px] lg:h-[370px] xl:w-[630px] xl:h-[630px] animate-float">
+                            <div className="absolute top-1/2 translate-y-[120%] lg:-right-10 xl:-right-32 lg:w-[370px] lg:h-[370px] xl:w-[630px] xl:h-[630px] animate-float">
                                 <Image
                                     src="/assets/star.png"
                                     alt="Decorative Star"

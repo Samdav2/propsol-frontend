@@ -16,6 +16,8 @@ const Footer = () => {
                             <Link href="/about" className="hover:text-white transition-colors">About</Link>
                             <Link href="/faq" className="hover:text-white transition-colors">FAQ</Link>
                             <Link href="/support" className="hover:text-white transition-colors">Support</Link>
+                            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+                            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
                         </nav>
                         <p className="mt-8 text-xs text-slate-600">
                             © 2025 PropSol. All rights reserved
@@ -37,7 +39,7 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer >
     );
 };
 
