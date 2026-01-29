@@ -52,7 +52,15 @@ export default function SignUpPage() {
             }
         } catch (err: any) {
             console.error("Registration error:", err);
-            const errorMessage = "Registration failed. Please try again.";
+            let errorMessage = "Registration failed. Please try again.";
+
+            // Extract specific error message from API response
+            if (err.response?.data?.detail) {
+                errorMessage = err.response.data.detail;
+            } else if (err.response?.data?.message) {
+                errorMessage = err.response.data.message;
+            }
+
             setError(errorMessage);
             toast.error(errorMessage);
         } finally {

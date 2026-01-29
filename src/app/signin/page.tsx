@@ -36,7 +36,15 @@ function SignInForm() {
             }, 1000);
         } catch (err: any) {
             console.error("Login error:", err);
-            const errorMessage = "Invalid email or password. Please try again.";
+            let errorMessage = "Invalid email or password. Please try again.";
+
+            // Extract specific error message from API response
+            if (err.response?.data?.detail) {
+                errorMessage = err.response.data.detail;
+            } else if (err.response?.data?.message) {
+                errorMessage = err.response.data.message;
+            }
+
             setError(errorMessage);
             toast.error(errorMessage);
         } finally {
